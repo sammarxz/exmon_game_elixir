@@ -6,7 +6,6 @@ defmodule ExMon.Player do
 
   defstruct @required_keys
 
-
   def build(name, move_rnd, move_avg, move_heal) do
     %ExMon.Player{
       life: @max_life,
