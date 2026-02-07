@@ -9,9 +9,14 @@ defmodule ExMon do
     |> create_player()
     |> Game.start(player)
 
-    Status.print_round_message()
+    Status.print_round_message(Game.info())
   end
 
+  @spec create_player(any()) :: %ExMon.Player{
+          life: 100,
+          moves: %{move_avg: any(), move_heal: any(), move_rnd: any()},
+          name: any()
+        }
   def create_player(name) do
     Player.build(name, :kick, :punch, :heal)
   end
@@ -28,5 +33,7 @@ defmodule ExMon do
       :move_heal -> "heal"
       move -> Actions.attack(move)
     end
+
+    Status.print_round_message(Game.info())
   end
 end
