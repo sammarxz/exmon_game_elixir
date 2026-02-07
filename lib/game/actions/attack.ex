@@ -4,14 +4,15 @@ defmodule Exmon.Game.Actions.Attack do
   @move_avg_power 18..25
   @move_rnd_power 10..35
 
-  def attack_oponnent(oponnent, move) do
+  def attack_opponent(opponent, move) do
     damage = calculate_power(move)
 
-    oponnent
+    opponent
     |> Game.fetch_player()
     |> Map.get(:life)
     |> calculate_total_life(damage)
-    |> update_opponent_life(oponnent)
+    |> update_opponent_life(opponent)
+    |> update_game(opponent)
   end
 
   defp calculate_power(:move_avg), do: Enum.random(@move_avg_power)
@@ -24,5 +25,11 @@ defmodule Exmon.Game.Actions.Attack do
     opponent
     |> Game.fetch_player()
     |> Map.put(:life, life)
+  end
+
+  defp update_game(player, opponent) do
+    Game.info()
+    |> Map.put(opponent, player)
+    |> Game.update()
   end
 end
