@@ -11,7 +11,12 @@ defmodule ExMon.Game do
       status: :started
     }
 
-    Agent.start_link(fn -> initial_value end, name: __MODULE__)
+    case Agent.start_link(fn -> initial_value end, name: __MODULE__) do
+      {:ok, pid} -> {:ok, pid}
+      {:error, {:already_started, _pid}} ->
+        Agent.update(__MODULE__, fn _ -> initial_value end)
+        :ok
+    end
   end
 
   def info, do: Agent.get(__MODULE__, & &1)
@@ -29,7 +34,7 @@ defmodule ExMon.Game do
   defp update_game_status(
          %{player: %Player{life: player_life}, computer: %Player{life: computer_life}} = state
        )
-       when player_life == 0 or computer_life == 0, do: Map.put(state, :status, :game_over)
+       when player_life <= 0 or computer_life <= 0, do: Map.put(state, :status, :game_over)
   defp update_game_status(state) do
     state
     |> Map.put(:status, :continue)

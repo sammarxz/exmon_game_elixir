@@ -22,7 +22,6 @@ defmodule ExMon.Game.Actions do
   end
 
   def heal do
-    IO.puts("heal")
     case Game.turn() do
       :player -> Heal.heal_life(:player)
       :computer -> Heal.heal_life(:computer)
