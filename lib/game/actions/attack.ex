@@ -1,4 +1,4 @@
-defmodule Exmon.Game.Actions.Attack do
+defmodule ExMon.Game.Actions.Attack do
   alias ExMon.Game
   alias ExMon.Game.Status
 
